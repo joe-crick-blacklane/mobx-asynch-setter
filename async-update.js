@@ -1,5 +1,9 @@
 const mobx = require('mobx');
 
+/**
+ * Performs an async update on a MobX getter
+ * @param val
+ */
 module.exports = function asyncUpdate(val) {
   const backingProp = getBackingProp.call(this);
   this[backingProp] = val;
@@ -11,5 +15,16 @@ module.exports = function asyncUpdate(val) {
  * @return {*}
  */
 function getBackingProp() {
-  return Object.keys(this.$mobx.values).filter(key => key[0] === '_' && key !== '__proto__')[0]
+  const values = this.$mobx.values;
+  return Object.keys(values).filter(key => instanceOf(values[key], 'ObservableObject'))[0];
+}
+
+/**
+ * Indicates whether an object is of an instance type
+ * @param object
+ * @param instance
+ * @return {boolean}
+ */
+function instanceOf(object, instance) {
+  return object.toString().includes(instance);
 }
