@@ -26,5 +26,5 @@ function getBackingProp() {
  * @return {boolean}
  */
 function instanceOf(object, instance) {
-  return object.toString().includes(instance);
+  return object.toString().indexOf(instance) > -1;
 }
